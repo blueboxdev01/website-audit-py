@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Local {{ analysis.keyword | title }} Visibility Report — {{ analysis.prospect_name }}</title>
+    <style>{{ css }}</style>
+</head>
+<body>
+
+<section class="cover">
+    <div class="title">Your Local {{ analysis.keyword | title }} Visibility Report</div>
+    <div class="company">{{ analysis.prospect_name }}</div>
+    <div class="city">{{ analysis.prospect_city }}</div>
+    <div class="date">{{ report_date }}</div>
+</section>
+
+<h2>What This Report Shows</h2>
+<div class="exec-summary">
+    <ul>
+        {% for item in analysis.executive_summary %}
+        <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<h2>Where You Show Up Today</h2>
+{% if analysis.prospect_rank %}
+    <div class="rank-callout">
+        When customers in {{ analysis.prospect_city }} search for "{{ analysis.keyword }}", your business appears at position #{{ analysis.prospect_rank }} on the map.
+    </div>
+{% else %}
+    <div class="rank-callout not-ranking">
+        When customers in {{ analysis.prospect_city }} search for "{{ analysis.keyword }}", your business does not appear in the top results on the map — they are finding your competitors instead.
+    </div>
+{% endif %}
+
+<h2>Your Public Business Listing</h2>
+<p>How complete your listing looks to a potential customer: <strong>{{ (analysis.prospect_signals.profile_completeness * 100) | round(0) | int }}%</strong></p>
+<ul>
+    <li>Services listed: {{ analysis.prospect_signals.category_count }}</li>
+    <li>Customer reviews: {{ analysis.prospect_signals.review_count }} ({{ analysis.prospect_signals.rating }} average stars)</li>
+    <li>Regular updates posted: {{ 'Yes' if analysis.prospect_signals.has_posts else 'No' }}</li>
+    <li>Customer questions answered: {{ 'Yes' if analysis.prospect_signals.has_qa else 'No' }}</li>
+</ul>
+
+<h2>How You Compare to the Top Businesses in Your Area</h2>
+<table class="comparison">
+    <thead>
+        <tr>
+            <th></th>
+            <th>{{ analysis.prospect_name }}</th>
+            {% for c in analysis.competitor_signals %}
+            <th>#{{ loop.index }} {{ c.name }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Listing completeness</td>
+            <td>{{ (analysis.prospect_signals.profile_completeness * 100) | round(0) | int }}%</td>
+            {% for c in analysis.competitor_signals %}
+            <td>{{ (c.profile_completeness * 100) | round(0) | int }}%</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Services listed</td>
+            <td>{{ analysis.prospect_signals.category_count }}</td>
+            {% for c in analysis.competitor_signals %}
+            <td>{{ c.category_count }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Customer reviews</td>
+            <td>{{ analysis.prospect_signals.review_count }}</td>
+            {% for c in analysis.competitor_signals %}
+            <td>{{ c.review_count }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Average star rating</td>
+            <td>{{ analysis.prospect_signals.rating }}</td>
+            {% for c in analysis.competitor_signals %}
+            <td>{{ c.rating }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Posting regular updates</td>
+            <td>{{ 'Yes' if analysis.prospect_signals.has_posts else 'No' }}</td>
+            {% for c in analysis.competitor_signals %}
+            <td>{{ 'Yes' if c.has_posts else 'No' }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Items / services shown</td>
+            <td>{{ analysis.prospect_signals.services_listed }}</td>
+            {% for c in analysis.competitor_signals %}
+            <td>{{ c.services_listed }}</td>
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
+
+<h2>Why Customers Aren't Finding You</h2>
+{% if analysis.gaps %}
+<p>These are the specific reasons your business is being passed over in favor of competitors:</p>
+{% for gap in analysis.gaps %}
+<div class="recommendation">
+    <span class="impact-label impact-{{ gap.impact }}">{{ gap.impact }} priority</span>
+    {{ gap.recommendation }}
+</div>
+{% endfor %}
+{% else %}
+<p>Your listing looks strong across every area we measured against the top businesses in your area.</p>
+{% endif %}
+
+<div class="cta">
+    <h2>Let's Fix This For You</h2>
+    <p>Every day this goes unaddressed, the customers searching for "{{ analysis.keyword }}" in {{ analysis.prospect_city }} are walking into your competitors' doors instead of yours. We help local businesses turn this around — and we'd like to do the same for you.</p>
+    <p><strong>Reply to this report to book a free 20-minute call and we'll walk you through exactly how we'd fix each of the issues above.</strong></p>
+</div>
+
+</body>
+</html>

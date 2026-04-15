@@ -1,0 +1,16 @@
+{
+  "search_metadata": {"status": "Success"},
+  "search_parameters": {"engine": "google_maps", "q": "Sunny Days Daycare Newark NJ"},
+  "place_results": {
+    "title": "Sunny Days Daycare",
+    "place_id": "ChIJexampleplaceid1",
+    "data_id": "0x0:0xexampledataid1",
+    "address": "123 Main St, Newark, NJ 07102",
+    "phone": "(555) 123-4567",
+    "website": "https://sunnydaysdaycare.example",
+    "type": ["Day care center"],
+    "rating": 4.2,
+    "reviews": 47,
+    "gps_coordinates": {"latitude": 40.7357, "longitude": -74.1724}
+  }
+}

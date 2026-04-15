@@ -1,0 +1,54 @@
+{
+  "search_metadata": {"status": "Success"},
+  "search_parameters": {"engine": "google_maps", "q": "day care center Newark NJ"},
+  "local_results": [
+    {
+      "position": 1,
+      "title": "Top Tots Learning Center",
+      "place_id": "ChIJcompetitor001",
+      "address": "45 Broad St, Newark, NJ",
+      "phone": "(555) 111-0001",
+      "website": "https://toptots.example",
+      "type": ["Day care center"],
+      "rating": 4.8,
+      "reviews": 220,
+      "gps_coordinates": {"latitude": 40.7350, "longitude": -74.1700}
+    },
+    {
+      "position": 2,
+      "title": "Little Stars Daycare",
+      "place_id": "ChIJcompetitor002",
+      "address": "88 Market St, Newark, NJ",
+      "phone": "(555) 111-0002",
+      "website": "https://littlestars.example",
+      "type": ["Day care center"],
+      "rating": 4.6,
+      "reviews": 180,
+      "gps_coordinates": {"latitude": 40.7360, "longitude": -74.1710}
+    },
+    {
+      "position": 3,
+      "title": "Bright Kids Academy",
+      "place_id": "ChIJcompetitor003",
+      "address": "12 Park Pl, Newark, NJ",
+      "phone": "(555) 111-0003",
+      "website": "https://brightkids.example",
+      "type": ["Day care center"],
+      "rating": 4.5,
+      "reviews": 145,
+      "gps_coordinates": {"latitude": 40.7340, "longitude": -74.1730}
+    },
+    {
+      "position": 4,
+      "title": "Sunny Days Daycare",
+      "place_id": "ChIJexampleplaceid1",
+      "address": "123 Main St, Newark, NJ 07102",
+      "phone": "(555) 123-4567",
+      "website": "https://sunnydaysdaycare.example",
+      "type": ["Day care center"],
+      "rating": 4.2,
+      "reviews": 47,
+      "gps_coordinates": {"latitude": 40.7357, "longitude": -74.1724}
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local Visibility Report Generator</title>
+<style>
+  :root {
+    --bg: #fafaf7;
+    --surface: #ffffff;
+    --ink: #111111;
+    --muted: #6b6b6b;
+    --line: #e6e6e0;
+    --accent: #1f4d3a;
+    --accent-hover: #153527;
+    --danger: #a33;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    padding: 28px 32px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .brand-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+  }
+  .card {
+    width: 100%;
+    max-width: 520px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 40px;
+  }
+  h1 {
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    font-weight: 600;
+  }
+  .sub {
+    color: var(--muted);
+    margin: 0 0 28px;
+    font-size: 15px;
+  }
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  input[type=text] {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    background: #fff;
+    transition: border-color 0.15s ease;
+  }
+  input[type=text]:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .field { margin-bottom: 18px; }
+  .hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 5px;
+  }
+  button {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.15s ease;
+  }
+  button:hover { background: var(--accent-hover); }
+  button:disabled {
+    background: var(--muted);
+    cursor: not-allowed;
+  }
+  .status {
+    margin-top: 18px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+  }
+  .status.show { display: block; }
+  .status.loading {
+    background: #f3f1ea;
+    color: var(--ink);
+  }
+  .status.error {
+    background: #fbecec;
+    color: var(--danger);
+  }
+  .spinner {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border: 2px solid var(--muted);
+    border-top-color: var(--ink);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 8px;
+    vertical-align: -1px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><span class="brand-dot"></span>Local Visibility</div>
+  <div style="color: var(--muted); font-size: 13px;">Report generator</div>
+</header>
+
+<main>
+  <div class="card">
+    <h1>Generate a visibility report</h1>
+    <p class="sub">Enter a business and we'll produce a client-ready PDF showing where they stand locally.</p>
+
+    <form id="form">
+      <div class="field">
+        <label for="company">Business name</label>
+        <input type="text" id="company" name="company" required placeholder="The Growing Garden Nursery">
+      </div>
+
+      <div class="field">
+        <label for="city">City, State</label>
+        <input type="text" id="city" name="city" required placeholder="Paramus, New Jersey">
+      </div>
+
+      <div class="field">
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category" required placeholder="daycare">
+        <div class="hint">The word customers search when looking for this business.</div>
+      </div>
+
+      <button type="submit" id="submit">Generate report</button>
+
+      <div id="status" class="status"></div>
+    </form>
+  </div>
+</main>
+
+<footer>Reports save locally and download automatically when ready.</footer>
+
+<script>
+  const form = document.getElementById('form');
+  const btn = document.getElementById('submit');
+  const status = document.getElementById('status');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'Generating…';
+    status.className = 'status show loading';
+    status.innerHTML = '<span class="spinner"></span>Pulling search data and building the PDF. This takes 20–60 seconds.';
+
+    const data = new FormData(form);
+    try {
+      const res = await fetch('/generate', { method: 'POST', body: data });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: 'Report generation failed.' }));
+        throw new Error(err.error || 'Report generation failed.');
+      }
+      const blob = await res.blob();
+      const disposition = res.headers.get('Content-Disposition') || '';
+      const match = disposition.match(/filename="?([^"]+)"?/);
+      const filename = match ? match[1] : 'report.pdf';
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+
+      status.className = 'status show loading';
+      status.textContent = 'Report downloaded: ' + filename;
+    } catch (err) {
+      status.className = 'status show error';
+      status.textContent = err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Generate report';
+    }
+  });
+</script>
+
+</body>
+</html>

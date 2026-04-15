@@ -1,0 +1,26 @@
+{
+  "search_metadata": {"status": "Success"},
+  "place_results": {
+    "title": "Sunny Days Daycare",
+    "place_id": "ChIJexampleplaceid1",
+    "address": "123 Main St, Newark, NJ 07102",
+    "phone": "(555) 123-4567",
+    "website": "https://sunnydaysdaycare.example",
+    "type": ["Day care center"],
+    "types": ["Day care center", "Preschool"],
+    "rating": 4.2,
+    "reviews": 47,
+    "description": "A warm and nurturing daycare in downtown Newark.",
+    "hours": [{"monday": "7AM-6PM"}],
+    "photos_count": 12,
+    "posts": [],
+    "questions": [],
+    "service_options": ["Pickup", "Drop-off"],
+    "attributes": ["Wheelchair accessible entrance"],
+    "user_reviews": {
+      "summary": [],
+      "most_relevant": [{"date": "2 weeks ago", "rating": 5, "snippet": "Great teachers!"}]
+    },
+    "owner_response_rate": 0.35
+  }
+}
